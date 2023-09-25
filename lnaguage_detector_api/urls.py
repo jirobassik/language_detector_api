@@ -19,7 +19,8 @@ from django.urls import path, include
 from rest_framework import routers
 
 from file_manager.views import UploadedFileViewSet
-from lang_detector.views import AlphabetDetectorLanguageAPIView
+from lang_detector.views import AlphabetDetectorLanguageAPIView, ShortWordDetectorLanguageAPIView, \
+    NeuroDetectorLanguageAPIView
 
 router = routers.SimpleRouter()
 router.register(r'api/v1/uploadfiles', UploadedFileViewSet)
@@ -27,5 +28,7 @@ router.register(r'api/v1/uploadfiles', UploadedFileViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/alphabet/<int:pk>', AlphabetDetectorLanguageAPIView.as_view()),
+    path('api/v1/short/<int:pk>', ShortWordDetectorLanguageAPIView.as_view()),
+    path('api/v1/neuro/<int:pk>', NeuroDetectorLanguageAPIView.as_view()),
     path('', include(router.urls)),
 ]

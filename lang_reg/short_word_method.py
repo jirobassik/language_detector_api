@@ -1,27 +1,30 @@
-from textmixin import TextMixin
+from lang_reg.textmixin import TextMixin
 from collections import Counter
 from operator import ge, getitem
 from decimal import Decimal
 
 
 class ShortWord(TextMixin):
-    __slots__ = (
-        'filenames', 'short_english_words_probability', 'short_russian_words_probability')
+    __slots__ = ('short_english_words_probability', 'short_russian_words_probability')
 
-    def __init__(self, *args):
-        self.filenames = args
-        self.short_english_words_probability = self.__create_poa('poa_files/test1.pdf')
-        self.short_russian_words_probability = self.__create_poa('poa_files/test2.pdf')
+    def __init__(self):
+        self.short_english_words_probability = self.__create_poa('test1.pdf')
+        self.short_russian_words_probability = self.__create_poa('test2.pdf')
 
-    def short_method_analyze(self):
+    def short_method_analyze_many_files(self, *args):
         res_dict_short_meth = {}
-        for file in self.filenames:
-            input_preprocess_text = self.remove_spaces_punctuation_short_meth(self.reading_txt_file(file))
+        for file in args:
+            input_preprocess_text = self.remove_spaces_punctuation_short_meth(self.reading_pdf_file('media', file))
             res_dict_short_meth[file] = self.__file_probability(input_preprocess_text)
         return res_dict_short_meth
 
+    def short_method_analyze_one_file(self, file_name: str):
+        input_preprocess_text = self.remove_spaces_punctuation_short_meth(self.reading_pdf_file('media', file_name))
+        res_dict_short_meth = self.__file_probability(input_preprocess_text)
+        return 'english' if res_dict_short_meth['english'] > res_dict_short_meth['russian'] else 'russian'
+
     def __create_poa(self, filename: str):
-        read_file_pdf_ = self.reading_pdf_file(filename)
+        read_file_pdf_ = self.reading_pdf_file('lang_reg/poa_files', filename)
         preprocess_pdf_text = self.remove_spaces_punctuation_short_meth(read_file_pdf_.lower())
         counter_words = Counter(preprocess_pdf_text)
         counter_num_short_words = self.__counter_number_short_words(counter_words)
@@ -51,8 +54,3 @@ class ShortWord(TextMixin):
             else:
                 probability *= Decimal(0.01)
         return probability
-
-
-# short_word_meth = ShortWord('text1.txt', 'text2.txt')
-# c = short_word_meth.short_method_analyze()
-# print(c)

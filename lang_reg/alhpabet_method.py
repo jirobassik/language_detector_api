@@ -24,11 +24,9 @@ class Alphabets:
 
 
 class AlphabetMethod(Alphabets, TextMixin):
-    # __slots__ = ('filenames',)
 
     def __init__(self):
         super().__init__()
-        # self.filenames = args
 
     def __count_letters(self, file_name):
         text_counter = Counter(self.remove_spaces_punctuation(self.reading_pdf_file('media', file_name)))
@@ -45,7 +43,6 @@ class AlphabetMethod(Alphabets, TextMixin):
         engl_percent, rus_percent = self.__letter_percent(filename)
         percent_dict = {'english_percent': engl_percent, 'russian_percent': rus_percent}
         return 'english' if percent_dict['english_percent'] > percent_dict['russian_percent'] else 'russian'
-        # return {'english_percent': engl_percent, 'russian_percent': rus_percent}
 
     def __letter_percent(self, filename: str):
         alph_counter, all_alphs = self.__count_letters(filename)
@@ -56,8 +53,3 @@ class AlphabetMethod(Alphabets, TextMixin):
     @staticmethod
     def __calculate_alph_percents(letters: str, alph_counter: Counter, all_alphs: int):
         return sum(((alph_counter.get(alph, 0) / all_alphs) * 100 for alph in letters))
-
-
-# alphabet_language = AlphabetMethod('text1.txt', 'text2.txt')
-# d = alphabet_language.alphabet_method_many_files()
-# print(d)
