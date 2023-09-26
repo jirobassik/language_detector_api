@@ -3,6 +3,8 @@ from .models import FileModel
 
 
 class UploadedFileSerializer(serializers.ModelSerializer):
+    file_content = serializers.CharField
+
     class Meta:
         model = FileModel
-        fields = '__all__'
+        fields = ('id', 'upload_file', 'file_content')

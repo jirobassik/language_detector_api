@@ -18,17 +18,19 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from file_manager.views import UploadedFileViewSet
+from file_manager.views import UploadedFileViewSet, DownloadFileViewSet
 from lang_detector.views import AlphabetDetectorLanguageAPIView, ShortWordDetectorLanguageAPIView, \
-    NeuroDetectorLanguageAPIView
+    NeuroDetectorLanguageAPIView, FileStatisticAPIView
 
 router = routers.SimpleRouter()
 router.register(r'api/v1/uploadfiles', UploadedFileViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/download/<int:id>', DownloadFileViewSet.as_view()),
     path('api/v1/alphabet/<int:pk>', AlphabetDetectorLanguageAPIView.as_view()),
     path('api/v1/short/<int:pk>', ShortWordDetectorLanguageAPIView.as_view()),
     path('api/v1/neuro/<int:pk>', NeuroDetectorLanguageAPIView.as_view()),
+    path('api/v1/files_statistic/', FileStatisticAPIView.as_view()),
     path('', include(router.urls)),
 ]

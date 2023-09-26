@@ -1,3 +1,5 @@
+import time
+
 from lang_reg.textmixin import TextMixin
 from collections import Counter
 from operator import ge, getitem
@@ -13,10 +15,14 @@ class ShortWord(TextMixin):
 
     def short_method_analyze_many_files(self, *args):
         res_dict_short_meth = {}
+        start_time = time.time()
         for file in args:
             input_preprocess_text = self.remove_spaces_punctuation_short_meth(self.reading_pdf_file('media', file))
-            res_dict_short_meth[file] = self.__file_probability(input_preprocess_text)
-        return res_dict_short_meth
+            dict_short_meth = self.__file_probability(input_preprocess_text)
+            res_dict_short_meth[file] = 'english' if dict_short_meth['english'] > dict_short_meth[
+                'russian'] else 'russian'
+        res_time = time.time() - start_time
+        return res_dict_short_meth, res_time
 
     def short_method_analyze_one_file(self, file_name: str):
         input_preprocess_text = self.remove_spaces_punctuation_short_meth(self.reading_pdf_file('media', file_name))

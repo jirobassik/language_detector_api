@@ -1,3 +1,4 @@
+import time
 from collections import Counter
 from string import ascii_letters
 from itertools import chain
@@ -34,10 +35,12 @@ class AlphabetMethod(Alphabets, TextMixin):
 
     def alphabet_method_many_files(self, *args):
         dict_percent_files = {}
+        start_time = time.time()
         for filename in args:
             engl_percent, rus_percent = self.__letter_percent(filename)
-            dict_percent_files[filename] = {'english_percent': engl_percent, 'russian_percent': rus_percent}
-        return dict_percent_files
+            dict_percent_files[filename] = 'english' if engl_percent > rus_percent else 'russian'
+        res_time = time.time() - start_time
+        return dict_percent_files, res_time
 
     def alphabet_method_one_file(self, filename: str):
         engl_percent, rus_percent = self.__letter_percent(filename)
