@@ -45,7 +45,8 @@ class AlphabetMethod(Alphabets, TextMixin):
     def alphabet_method_one_file(self, filename: str):
         engl_percent, rus_percent = self.__letter_percent(filename)
         percent_dict = {'english_percent': engl_percent, 'russian_percent': rus_percent}
-        return 'english' if percent_dict['english_percent'] > percent_dict['russian_percent'] else 'russian'
+        return ('english', percent_dict['english_percent']) if percent_dict['english_percent'] > percent_dict[
+            'russian_percent'] else ('russian', percent_dict['russian_percent'])
 
     def __letter_percent(self, filename: str):
         alph_counter, all_alphs = self.__count_letters(filename)

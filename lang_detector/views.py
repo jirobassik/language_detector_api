@@ -1,3 +1,5 @@
+import time
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from file_manager.models import FileModel
@@ -17,8 +19,12 @@ class AlphabetDetectorLanguageAPIView(APIView):
     def get(request, pk):
         file_object = FileModel.objects.get(pk=pk)
         filename = file_object.upload_file.name
+        start_time = time.time()
+        text_language, language_percent = alphabet_method.alphabet_method_one_file(filename)
+        res_time = time.time() - start_time
+        print(f'Затраченное время: {res_time}, Язык: {text_language}, Точность {language_percent}')
         return Response(
-            {'text_language': alphabet_method.alphabet_method_one_file(filename), 'filename': filename, 'file_id': pk})
+            {'text_language': text_language, 'language_percent': language_percent, 'filename': filename, 'file_id': pk})
 
 
 class ShortWordDetectorLanguageAPIView(APIView):
@@ -27,8 +33,12 @@ class ShortWordDetectorLanguageAPIView(APIView):
     def get(request, pk):
         file_object = FileModel.objects.get(pk=pk)
         filename = file_object.upload_file.name
+        start_time = time.time()
+        text_language, language_percent = short_word_method.short_method_analyze_one_file(filename)
+        res_time = time.time() - start_time
+        print(f'Затраченное время: {res_time}, Язык: {text_language}, Точность {language_percent}')
         return Response(
-            {'text_language': short_word_method.short_method_analyze_one_file(filename), 'filename': filename,
+            {'text_language': text_language, 'language_percent': language_percent, 'filename': filename,
              'file_id': pk})
 
 
@@ -38,8 +48,12 @@ class NeuroDetectorLanguageAPIView(APIView):
     def get(request, pk):
         file_object = FileModel.objects.get(pk=pk)
         filename = file_object.upload_file.name
+        start_time = time.time()
+        text_language, language_percent = neuro_method.neuro_method_one_file(filename)
+        res_time = time.time() - start_time
+        print(f'Затраченное время: {res_time}, Язык: {text_language}, Точность {language_percent}')
         return Response(
-            {'text_language': neuro_method.neuro_method_one_file(filename), 'filename': filename, 'file_id': pk})
+            {'text_language': text_language, 'language_percent': language_percent, 'filename': filename, 'file_id': pk})
 
 
 class FileStatisticAPIView(APIView):

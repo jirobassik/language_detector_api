@@ -27,7 +27,8 @@ class ShortWord(TextMixin):
     def short_method_analyze_one_file(self, file_name: str):
         input_preprocess_text = self.remove_spaces_punctuation_short_meth(self.reading_pdf_file('media', file_name))
         res_dict_short_meth = self.__file_probability(input_preprocess_text)
-        return 'english' if res_dict_short_meth['english'] > res_dict_short_meth['russian'] else 'russian'
+        return ('english', res_dict_short_meth['english']) if res_dict_short_meth['english'] > res_dict_short_meth[
+            'russian'] else ('russian', res_dict_short_meth['russian'])
 
     def __create_poa(self, filename: str):
         read_file_pdf_ = self.reading_pdf_file('lang_reg/poa_files', filename)

@@ -5,21 +5,23 @@ from langid.langid import LanguageIdentifier, model
 
 
 class Neuro(TextMixin):
+    __slots__ = ('dict_language',)
+
+    def __init__(self):
+        self.dict_language = {'en': 'english', 'ru': 'russian'}
 
     def neuro_method_many_files(self, *args):
         dict_neuro_res = {}
         start_time = time.time()
         for file in args:
-            dict_languages = {'en': 'english', 'ru': 'russian'}
-            dict_language = self.__langid_identifier(self.reading_pdf_file('media', file))
-            dict_neuro_res[file] = dict_languages.get(dict_language[0], 'unknown')
+            tuple_language = self.__langid_identifier(self.reading_pdf_file('media', file))
+            dict_neuro_res[file] = self.dict_language.get(tuple_language[0], 'unknown')
         res_time = time.time() - start_time
         return dict_neuro_res, res_time
 
     def neuro_method_one_file(self, file_name):
-        dict_language = {'en': 'english', 'ru': 'russian'}
         dict_neuro_res = self.__langid_identifier(self.reading_pdf_file('media', file_name))
-        return dict_language.get(dict_neuro_res[0], 'unknown')
+        return self.dict_language.get(dict_neuro_res[0], 'unknown'), dict_neuro_res[1]
 
     @staticmethod
     def __langid_identifier(text: str):
