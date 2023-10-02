@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class LangDetectorConfig(AppConfig):
+class SummarizeTextConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'lang_detector'
+    name = 'summarize_text'
