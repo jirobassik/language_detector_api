@@ -2,6 +2,7 @@ import time
 
 from lang_reg.textmixin import TextMixin
 import fasttext
+from pathlib import Path
 
 
 class Neuro(TextMixin):
@@ -9,7 +10,7 @@ class Neuro(TextMixin):
 
     def __init__(self):
         self.dict_language = {'en': 'english', 'ru': 'russian'}
-        self.model = fasttext.load_model('D:\Programs\PyCharm 2021.3.3\lnaguage_detector_api\lid.176.ftz')
+        self.model = fasttext.load_model(str(Path('lang_reg/models/lid.176.ftz').absolute()))
 
     def neuro_method_many_files(self, *args):
         dict_neuro_res = {}
