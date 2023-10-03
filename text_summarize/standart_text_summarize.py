@@ -6,25 +6,24 @@ from rake_nltk import Rake
 
 from text_summarize.textmixin import TextMixin
 
+
 class StandartTextSummarize(TextMixin):
+    __slots__ = ('rake',)
+
     def __init__(self):
         self.rake = Rake()
 
     def summarize_keywords(self, filename: str):
         text = self.reading_pdf_file('media', filename).replace('\n', '')
         self.rake.extract_keywords_from_text(text)
-        print(self.rake.get_ranked_phrases())
-        print(self.rake.get_ranked_phrases_with_scores())
         return ', '.join(self.rake.get_ranked_phrases()[:5])
 
     def summarize_text(self, filename: str):
         text_without_n = self.reading_pdf_file('media', filename).replace('\n', '')
-        pprint.pprint(text_without_n)
         list_sentence_tokenize = sent_tokenize(text_without_n)
         scores = self.calculate_weight_sentences(text_without_n, list_sentence_tokenize)
         sentence_score = zip(list_sentence_tokenize, scores)
         sorted_sentence_score = dict(sorted(sentence_score, key=lambda item: getitem(item, 1), reverse=True))
-        # print(sorted_sentence_score)
         return ' '.join(list(sorted_sentence_score.keys())[:10])
 
     def calculate_weight_sentences(self, text: str, sent_tokenize_: list):
@@ -48,7 +47,7 @@ class StandartTextSummarize(TextMixin):
 
     def __inverse_document_frequency(self, word: str, list_words: list, list_sentences: list):
         return 0.5 * (1 + self.__term_frequency(list_words, word) / self.__max_frequency(list_sentences, word)) * \
-            log(len(list_sentences) / 1) # Что делать с еденицией
+            log(len(list_sentences) / 1)  # Что делать с еденицией
 
     def __max_frequency(self, list_sentences: list, word: str):
         term_frequency = 0
